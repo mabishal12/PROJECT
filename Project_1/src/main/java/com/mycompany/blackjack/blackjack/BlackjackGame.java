@@ -3,98 +3,69 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.blackjack.blackjack;
-
 /**
  *
  * @author 97798
 **/
-   
 
 import java.util.Scanner;
 
 public class BlackjackGame {
-    private final Deck deck;
-    private final Player player;
-    private final Player dealer;
-    private final Scanner scanner;
 
-    public BlackjackGame() {
-        deck = new Deck();
-        player = new Player("Player");
-        dealer = new Player("Dealer");
-        scanner = new Scanner(System.in);
+    private Player player;// the player of the game
+    private Dealer dealer;
+
+    public BlackjackGame(Player player, Dealer dealer) {
+        this.player = player;
+        this.dealer = dealer;
     }
 
-    public void startGame() {
-        System.out.println("Welcome to Blackjack!");
+    /**
+     * @return the name
+     */
 
-        while (true) {
-            player.clearHand();
-            dealer.clearHand();
-            deck.shuffle();
+    /**
+     * @return the players of this game
+     */
+    public Player getPlayers() {
+        return player;
+    }
 
-            // Initial deal
-            player.addCard(deck.dealCard());
-            player.addCard(deck.dealCard());
-            dealer.addCard(deck.dealCard());
-            dealer.addCard(deck.dealCard());
+    /**
+     * @param players the players of this game
+     */
+    public void setPlayers(Player player) {
+        this.player = player;
+    }
 
-            // Player's turn
-            while (true) {
-                System.out.println(player);
+    /**
+     * Play the game. This might be one method or many method calls depending on
+     * your game.
+     */
+    public void play() {
+        System.out.println("Hello, "+player.getName()+"! Welcome to BLACK JACK!!");
+    };
 
-                // Ensure the dealer's hand is not empty before accessing the first card
-                if (!dealer.getHand().isEmpty()) {
-                    System.out.println("Dealer's visible card: " + dealer.getHand().get(0));
-                }
+    public void exit() {
+        System.out.println("See you next time.");
 
-                if (player.isBust()) {
-                    System.out.println("You bust! Dealer wins.");
-                    break;
-                }
+    };
 
-                System.out.println("Do you want to hit or stand? (h/s)");
-                String choice = scanner.nextLine();
-
-                if (choice.equalsIgnoreCase("h")) {
-                    player.addCard(deck.dealCard());
-                } else {
-                    break;
-                }
-            }
-
-            // Dealer's turn
-            if (!player.isBust()) {
-                while (dealer.getHandValue() < 17) {
-                    dealer.addCard(deck.dealCard());
-                }
-
-                System.out.println(dealer);
-
-                if (dealer.isBust() || player.getHandValue() > dealer.getHandValue()) {
-                    System.out.println("You win!");
-                } else if (player.getHandValue() == dealer.getHandValue()) {
-                    System.out.println("It's a tie!");
-                } else {
-                    System.out.println("Dealer wins!");
-                }
-            }
-
-            System.out.println("Do you want to play again? (y/n)");
-            String playAgain = scanner.nextLine();
-
-            if (!playAgain.equalsIgnoreCase("y")) {
-                break;
-            }
+    /**
+     * When the game is over, use this method to declare and display a winning
+     * player.
+     */
+    public void declareWinner(Object object) {
+        System.out.println("Your hand: "+player.hand.showHandCards()+"Value: "+player.hand.getTotalValue());
+        System.out.println("Dealer's hand: "+dealer.hand.showHandCards()+"Value: "+dealer.hand.getTotalValue());
+        if (object instanceof Player)
+            System.out.println(((Player) object).getName() + " wins!!");
+        if (object instanceof Dealer)
+            System.out.println("Dealer wins!!");
+        if(object==null){
+            System.out.println("The game ended in a tie.");
         }
 
-        System.out.println("Thanks for playing!");
-    }
+    };
 
-    public static void main(String[] args) {
-        BlackjackGame game = new BlackjackGame();
-        game.startGame();
-    }
-}
-
-
+}// end class

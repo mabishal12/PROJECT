@@ -9,57 +9,54 @@ package com.mycompany.blackjack.blackjack;
  * @author 97798
  */
 
-
 import java.util.ArrayList;
+import java.util.Scanner;
 
+/**
+ * The Player class represents a player in a card game like Blackjack.
+ */
 public class Player {
-    private final String name;
-    private final ArrayList<Card> hand;
 
+    String name; // the unique name for this player
+    Hand hand = new Hand();
+
+    /**
+     * A constructor that allows you to set the player's unique ID
+     *
+     * @param name the unique ID to assign to this player.
+     */
     public Player(String name) {
         this.name = name;
-        this.hand = new ArrayList<>();
     }
 
-    public void addCard(Card card) {
-        hand.add(card);
+    /**
+     * @return the player name
+     */
+    public String getName() {
+        return name;
     }
 
-    public int getHandValue() {
-        int value = 0;
-        int aceCount = 0;
+    /**
+     * Ensure that the playerID is unique
+     *
+     * @param name the player name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        for (Card card : hand) {
-            value += card.getValue();
-            if (card.getRank().equals("Ace")) {
-                aceCount++;
+    public boolean drawACardOrNot() {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("Do you want to draw one more card?(Y/N)");
+            String drawcard = sc.next();
+            if (drawcard.equalsIgnoreCase("Y")) {
+                return true;
+            } else if (drawcard.equalsIgnoreCase("N")) {
+                return false;
+            } else {
+                System.out.println("Please enter valid answer!");
             }
         }
-
-        while (value > 21 && aceCount > 0) {
-            value -= 10;
-            aceCount--;
-        }
-
-        return value;
-    }
-
-    public boolean isBust() {
-        return getHandValue() > 21;
-    }
-
-    public void clearHand() {
-        hand.clear();
-    }
-
-    public ArrayList<Card> getHand() {
-        return hand;
-    }
-
-    @Override
-    public String toString() {
-        return name + "'s hand: " + hand + " (value: " + getHandValue() + ")";
     }
 }
-
-
